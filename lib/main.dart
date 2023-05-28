@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:parcial_3/navpages/mainScreen.dart';
-import 'screens/login_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    const MyApp(),
+  );
 }
 
 class MyApp extends StatelessWidget {

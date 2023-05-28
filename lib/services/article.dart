@@ -16,4 +16,17 @@ class ArticleService {
       throw Exception('Failed to load data');
     }
   }
+
+  Future<List<ArticleUser>> fetchArticleUsersByWeek() async {
+    final response =
+        await http.get(Uri.parse('$_baseUrl/getAllArticlesByWeek'));
+
+    if (response.statusCode == 200) {
+      List jsonResponse = json.decode(utf8.decode(response.bodyBytes));
+      print(jsonResponse); // Decodificar utilizando UTF-8
+      return jsonResponse.map((item) => ArticleUser.fromJson(item)).toList();
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
 }

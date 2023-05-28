@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:lottie/lottie.dart';
 import '../models/article_user.dart';
 import '../services/article.dart';
@@ -18,11 +17,13 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final ArticleService _articleService = ArticleService();
   late Future<List<ArticleUser>> _articleUsersFuture;
+  late Future<List<ArticleUser>> _articleUsersFutureByWeek;
 
   @override
   void initState() {
     super.initState();
     _articleUsersFuture = _articleService.fetchArticleUsers();
+    _articleUsersFutureByWeek = _articleService.fetchArticleUsersByWeek();
   }
 
   @override
@@ -62,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     right: 0,
                     bottom: 0,
                     child: FutureBuilder<List<ArticleUser>>(
-                      future: _articleUsersFuture,
+                      future: _articleUsersFutureByWeek,
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
                           final articleUsers = snapshot.data!;
@@ -111,7 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         scrollDirection: Axis.horizontal,
                         children: [
                           FilterButton(
-                            label: "Todos",
+                            label: "Autor",
                             onPressed: () {
                               // Acción cuando se presiona el botón "Todos"
                             },
