@@ -37,7 +37,7 @@ class CardArticlesShort extends StatelessWidget {
               ),
               SizedBox(height: 8),
               Text(
-                "Este es una breve descripción para corroborar como funciona el widget para más inforamción presiona el Card y veamos que pasa",
+                article.description,
                 style: TextStyles.subtitleStyleCard,
                 softWrap: true,
                 maxLines: 4, // ajusta este número según tus necesidades

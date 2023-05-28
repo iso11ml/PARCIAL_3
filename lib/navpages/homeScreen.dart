@@ -1,87 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-
-import '../models/article.dart';
-import '../models/comment.dart';
-import '../models/user.dart';
+import 'package:lottie/lottie.dart';
+import '../models/article_user.dart';
+import '../services/article.dart';
 import '../utils/button_filter.dart';
 import '../utils/format_text.dart';
 import '../utils/widget_article_recently.dart';
 import '../utils/widget_artilcles_all.dart';
 
-User user = User(
-    idObject: "1",
-    name: "John Doe",
-    email: "johndoe@example.com",
-    password: "password",
-    profileImageUrl:
-        'https://a.espncdn.com/combiner/i?img=/i/headshots/nba/players/full/1966.png&w=350&h=254');
-Comment comment = Comment(
-    userId: "1",
-    description: "This is a comment",
-    timestamp: DateTime.now().toIso8601String());
-Article article = Article(
-    idObject: "1",
-    title: "Article title",
-    description: "Article description",
-    date: DateTime.now().toIso8601String(),
-    userId: "1",
-    likesUserId: [],
-    comments: [comment]);
-
-User user2 = User(
-    idObject: "1",
-    name: "John Doe",
-    email: "johndoe@example.com",
-    password: "password",
-    profileImageUrl: '');
-Comment comment2 = Comment(
-    userId: "1",
-    description: "This is a comment",
-    timestamp: DateTime.now().toIso8601String());
-Article article2 = Article(
-    idObject: "1",
-    title: "Article title",
-    description: "Article description",
-    date: DateTime.now().toIso8601String(),
-    userId: "1",
-    likesUserId: [],
-    comments: [comment]);
-
-User user3 = User(
-    idObject: "1",
-    name: "John Doe",
-    email: "johndoe@example.com",
-    password: "password",
-    profileImageUrl:
-        'https://forbes.cl/_next/image?url=https%3A%2F%2Fcdn.forbes.cl%2F2023%2F01%2FBillGates.jpg&w=1920&q=75');
-Comment comment3 = Comment(
-    userId: "1",
-    description: "This is a comment",
-    timestamp: DateTime.now().toIso8601String());
-Article article3 = Article(
-    idObject: "1",
-    title: "Article title",
-    description: "Article description",
-    date: DateTime.now().toIso8601String(),
-    userId: "1",
-    likesUserId: [],
-    comments: [comment]);
-
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  _HomeScreen createState() => _HomeScreen();
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreen extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> {
+  final ArticleService _articleService = ArticleService();
+  late Future<List<ArticleUser>> _articleUsersFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _articleUsersFuture = _articleService.fetchArticleUsers();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(
-            255, 143, 150, 155), // Cambia el color de fondo de la AppBar a azul
+        backgroundColor: Color.fromARGB(255, 143, 150, 155),
         title: Text('Bienvenid@ Isaay'),
         actions: <Widget>[
           IconButton(
@@ -98,7 +46,6 @@ class _HomeScreen extends State<HomeScreen> {
           children: [
             Container(
               height: 200,
-              // color: Colors.amber,
               child: Stack(
                 children: [
                   Align(
@@ -110,18 +57,32 @@ class _HomeScreen extends State<HomeScreen> {
                     ),
                   ),
                   Positioned(
-                    top: 40, // Ajusta esta posición según tus necesidades
+                    top: 40,
                     left: 0,
                     right: 0,
                     bottom: 0,
-                    child: ListView(
-                      scrollDirection: Axis.horizontal,
-                      children: [
-                        CardArticlesShort(article: article, user: user),
-                        CardArticlesShort(article: article, user: user),
-                        CardArticlesShort(article: article, user: user)
-                
-                      ],
+                    child: FutureBuilder<List<ArticleUser>>(
+                      future: _articleUsersFuture,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          final articleUsers = snapshot.data!;
+                          return ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: articleUsers.length,
+                            itemBuilder: (context, index) {
+                              final articleUser = articleUsers[index];
+                              return CardArticlesShort(
+                                article: articleUser.article,
+                                user: articleUser.user,
+                              );
+                            },
+                          );
+                        } else if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        }
+                        return Lottie.network(
+                            'https://assets5.lottiefiles.com/private_files/lf30_fup2uejx.json');
+                      },
                     ),
                   ),
                 ],
@@ -129,7 +90,6 @@ class _HomeScreen extends State<HomeScreen> {
             ),
             Container(
               height: 85,
-              // color: const Color.fromARGB(255, 123, 255, 7),
               child: Stack(
                 children: [
                   Align(
@@ -141,7 +101,7 @@ class _HomeScreen extends State<HomeScreen> {
                     ),
                   ),
                   Positioned(
-                    top: 40, // Ajusta esta posición según tus necesidades
+                    top: 40,
                     left: 0,
                     right: 0,
                     bottom: 0,
@@ -157,8 +117,8 @@ class _HomeScreen extends State<HomeScreen> {
                             },
                           ),
                           SizedBox(
-                              width:
-                                  16), // Ajusta el espaciado entre botones según tus necesidades
+                            width: 16,
+                          ),
                           FilterButton(
                             label: "Fecha Publición",
                             onPressed: () {
@@ -174,7 +134,6 @@ class _HomeScreen extends State<HomeScreen> {
             ),
             Container(
               height: 500,
-              // color: Color.fromARGB(255, 255, 106, 245),
               child: Stack(
                 children: [
                   Align(
@@ -185,31 +144,39 @@ class _HomeScreen extends State<HomeScreen> {
                     ),
                   ),
                   Positioned(
-                    top: 40, // Ajusta esta posición según tus necesidades
+                    top: 40,
                     left: 0,
                     right: 0,
                     bottom: 0,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ListView(
-                        // scrollDirection: Axis.vertical,
-                        children: [
-                          CardArticlesLarge(article: article2, user: user2),
-                          CardArticlesLarge(article: article, user: user),
-                          CardArticlesLarge(article: article3, user: user3),
-                        ],
-                      ),
+                    child: FutureBuilder<List<ArticleUser>>(
+                      future: _articleUsersFuture,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          final articleUsers = snapshot.data!;
+                          return ListView.builder(
+                            itemCount: articleUsers.length,
+                            itemBuilder: (context, index) {
+                              final articleUser = articleUsers[index];
+                              return CardArticlesLarge(
+                                article: articleUser.article,
+                                user: articleUser.user,
+                              );
+                            },
+                          );
+                        } else if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        }
+                        return Lottie.network(
+                            'https://assets5.lottiefiles.com/private_files/lf30_fup2uejx.json');
+                      },
                     ),
                   ),
                 ],
               ),
-            )
-
-            // Resto de tus widgets en el Column
+            ),
           ],
         ),
       ),
-      // Resto de tu código...
     );
   }
 }

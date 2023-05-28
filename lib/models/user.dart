@@ -3,12 +3,14 @@
 //   String name;
 //   String email;
 //   String password;
+//   String profileImageUrl;
 
 //   User({
 //     required this.idObject,
 //     required this.name,
 //     required this.email,
 //     required this.password,
+//     required this.profileImageUrl,
 //   });
 
 //   factory User.fromJson(Map<String, dynamic> json) {
@@ -17,38 +19,38 @@
 //       name: json['name'],
 //       email: json['email'],
 //       password: json['password'],
+//       profileImageUrl: json['profileImageUrl'],
 //     );
 //   }
 
-//   get profileImage => null;
-
 //   Map<String, dynamic> toJson() {
 //     return {
+//       'idObject': idObject,
 //       'name': name,
 //       'email': email,
 //       'password': password,
+//       'profileImageUrl': profileImageUrl,
 //     };
 //   }
 // }
-
 class User {
-  String idObject;
-  String name;
-  String email;
-  String password;
-  String profileImageUrl;
+  final String idObject;
+  final String name;
+  final String email;
+  final String password;
+  final String? profileImageUrl; // Hacer el campo opcional
 
   User({
     required this.idObject,
     required this.name,
     required this.email,
     required this.password,
-    required this.profileImageUrl,
+    this.profileImageUrl = '',
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      idObject: json['idObject'],
+      idObject: json['_id'],
       name: json['name'],
       email: json['email'],
       password: json['password'],
@@ -58,7 +60,7 @@ class User {
 
   Map<String, dynamic> toJson() {
     return {
-      'idObject': idObject,
+      '_id': idObject,
       'name': name,
       'email': email,
       'password': password,

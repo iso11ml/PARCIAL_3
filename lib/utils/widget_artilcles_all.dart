@@ -39,11 +39,10 @@ class CardArticlesLarge extends StatelessWidget {
                       CircleAvatar(
                         radius: 25,
                         backgroundImage: (user.profileImageUrl != null &&
-                                user.profileImageUrl.isNotEmpty)
-                            ? NetworkImage(user.profileImageUrl)
+                                user.profileImageUrl!.isNotEmpty)
+                            ? NetworkImage(user.profileImageUrl!)
                                 as ImageProvider<Object>?
-                            : AssetImage('assets/images/DEFAULT_IMAGES.png')
-                                as ImageProvider<Object>?,
+                            : AssetImage('assets/images/DEFAULT_IMAGES.png'),
                         backgroundColor: Colors.transparent,
                       ),
 
@@ -67,7 +66,7 @@ class CardArticlesLarge extends StatelessWidget {
               ),
               SizedBox(height: 8),
               Text(
-                "Este es una breve descripción para corroborar como funciona el widget para más inforamción presiona el Card y veamos que pasa",
+                article.description,
                 style: TextStyles.subtitleStyleCard,
                 softWrap: true,
                 maxLines: 4, // ajusta este número según tus necesidades
