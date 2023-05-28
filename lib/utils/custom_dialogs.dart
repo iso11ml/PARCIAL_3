@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:parcial_3/navpages/mainScreen.dart';
 import '../models/user.dart';
 import '../services/user_service.dart';
 import 'format_text.dart';
@@ -99,11 +100,11 @@ class MyCustomDialogs {
                   try {
                     await Future.delayed(const Duration(seconds: 2));
                     User user = await userService.getUser(email, password);
-                    // Navigator.of(context).push(
-                    //   MaterialPageRoute(
-                    //     builder: (context) => HomePage(user: user),
-                    //   ),
-                    // );
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => MainScreen(userInformation: user),
+                      ),
+                    );
                   } catch (e) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text(e.toString())),

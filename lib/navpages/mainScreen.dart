@@ -1,74 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:parcial_3/navpages/profileScreen.dart';
-import '../models/article.dart';
 import '../models/user.dart';
-import '../models/comment.dart';
-
 import 'configurationScreen.dart';
 import 'homeScreen.dart';
 import 'new_article.dart';
 
-User user = User(
-    idObject: "1",
-    name: "John Doe",
-    email: "johndoe@example.com",
-    password: "password",
-    profileImageUrl:
-        'https://a.espncdn.com/combiner/i?img=/i/headshots/nba/players/full/1966.png&w=350&h=254');
-Comment comment = Comment(
-    userId: "1",
-    description: "This is a comment",
-    timestamp: DateTime.now().toIso8601String());
-Article article = Article(
-    idObject: "1",
-    title: "Article title",
-    description: "Article description",
-    date: DateTime.now().toIso8601String(),
-    userId: "1",
-    likesUserId: [],
-    comments: [comment]);
-
-User user2 = User(
-    idObject: "1",
-    name: "John Doe",
-    email: "johndoe@example.com",
-    password: "password",
-    profileImageUrl: '');
-Comment comment2 = Comment(
-    userId: "1",
-    description: "This is a comment",
-    timestamp: DateTime.now().toIso8601String());
-Article article2 = Article(
-    idObject: "1",
-    title: "Article title",
-    description: "Article description",
-    date: DateTime.now().toIso8601String(),
-    userId: "1",
-    likesUserId: [],
-    comments: [comment]);
-
-User user3 = User(
-    idObject: "1",
-    name: "John Doe",
-    email: "johndoe@example.com",
-    password: "password",
-    profileImageUrl:
-        'https://forbes.cl/_next/image?url=https%3A%2F%2Fcdn.forbes.cl%2F2023%2F01%2FBillGates.jpg&w=1920&q=75');
-Comment comment3 = Comment(
-    userId: "1",
-    description: "This is a comment",
-    timestamp: DateTime.now().toIso8601String());
-Article article3 = Article(
-    idObject: "1",
-    title: "Article title",
-    description: "Article description",
-    date: DateTime.now().toIso8601String(),
-    userId: "1",
-    likesUserId: [],
-    comments: []);
-
 class MainScreen extends StatefulWidget {
-  const MainScreen({Key? key}) : super(key: key);
+  const MainScreen({Key? key, required this.userInformation}) : super(key: key);
+  final User userInformation;
 
   @override
   _MainScreenState createState() => _MainScreenState();
@@ -77,14 +16,18 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
 
-  // Definir las pantallas como miembros de la clase
-  final HomeScreen _homeScreen = HomeScreen();
-  final NewArticleScreen _newArticleScreen = NewArticleScreen();
-  final ProfileScreen _profileScreen = ProfileScreen(
-    articles: [article, article2],
-    user: user,
-  );
+  late HomeScreen _homeScreen;
+  late NewArticleScreen _newArticleScreen;
+  late ProfileScreen _profileScreen;
   final ConfigurationScreen _configurationScreen = ConfigurationScreen();
+  @override
+  void initState() {
+    super.initState();
+    _homeScreen = HomeScreen(userInformation: widget.userInformation);
+    _newArticleScreen =
+        NewArticleScreen(userInformation: widget.userInformation);
+    _profileScreen = ProfileScreen(userInformation: widget.userInformation);
+  }
 
   @override
   Widget build(BuildContext context) {

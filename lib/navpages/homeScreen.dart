@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import '../models/article_user.dart';
+import '../models/user.dart';
 import '../services/article.dart';
 import '../utils/button_filter.dart';
 import '../utils/format_text.dart';
@@ -8,7 +9,11 @@ import '../utils/widget_article_recently.dart';
 import '../utils/widget_artilcles_all.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({
+    Key? key,
+    required this.userInformation,
+  }) : super(key: key);
+  final User userInformation;
 
   @override
   _HomeScreenState createState() => _HomeScreenState();

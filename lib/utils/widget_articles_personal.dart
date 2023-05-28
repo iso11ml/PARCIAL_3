@@ -33,29 +33,12 @@ class CardArticlesPersonal extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    // Un Row dentro de otro Row para colocar el CircleAvatar junto al nombre del autor
-                    children: [
-                      CircleAvatar(
-                        radius: 25,
-                        backgroundImage: (user.profileImageUrl != null &&
-                                user.profileImageUrl!.isNotEmpty)
-                            ? NetworkImage(user.profileImageUrl!)
-                                as ImageProvider<Object>?
-                            : AssetImage('assets/images/DEFAULT_IMAGES.png'),
-                        backgroundColor: Colors.transparent,
-                      ),
-
-                      SizedBox(
-                          width:
-                              8), // Para dar un poco de espacio entre la imagen y el nombre
-                      Text('Author: ${user.name}',
-                          style: TextStyles.autorStyleCard),
-                    ],
-                  ),
-                  Text(
-                    article.idObject,
-                    style: TextStyles.titleStyleCard,
+                  Text(article.idObject, style: TextStyles.titleStyleCard),
+                  IconButton(
+                    icon: Icon(Icons.delete),
+                    onPressed: () {
+                      // Lógica para eliminar el artículo
+                    },
                   ),
                 ],
               ),

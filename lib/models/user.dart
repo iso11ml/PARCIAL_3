@@ -54,7 +54,8 @@ class User {
       name: json['name'],
       email: json['email'],
       password: json['password'],
-      profileImageUrl: json['profileImageUrl'],
+      profileImageUrl:
+          json['profileImageUrl'] as String?, // o json['profileImageUrl'] ?? ''
     );
   }
 

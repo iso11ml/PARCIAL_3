@@ -1,8 +1,13 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
+import '../models/user.dart';
 import '../utils/format_text.dart';
 
 class NewArticleScreen extends StatefulWidget {
+  const NewArticleScreen({Key? key, required this.userInformation})
+      : super(key: key);
+  final User userInformation;
+
   @override
   _NewArticleScreenState createState() => _NewArticleScreenState();
 }
@@ -11,7 +16,7 @@ class _NewArticleScreenState extends State<NewArticleScreen> {
   final _titleController = TextEditingController();
   final _contentController = TextEditingController();
   final _tagsController = TextEditingController();
-  final _categoriesController = TextEditingController();
+  // final _categoriesController = TextEditingController();
 
   List<String> _categories = [
     'Ciencia',
