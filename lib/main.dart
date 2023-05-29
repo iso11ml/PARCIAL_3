@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:parcial_3/navpages/mainScreen.dart';
+// import 'package:parcial_3/navpages/mainScreen.dart';
 import 'package:parcial_3/screens/login_screen.dart';
 
 void main() {

@@ -50,18 +50,18 @@ class User {
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      idObject: json['_id'],
+      idObject: json['_id'] != null ? json['_id'].toString() : '',
       name: json['name'],
       email: json['email'],
       password: json['password'],
-      profileImageUrl:
-          json['profileImageUrl'] as String?, // o json['profileImageUrl'] ?? ''
+      profileImageUrl: json['profileImageUrl']
+          as String?, // or json['profileImageUrl'] ?? ''
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      '_id': idObject,
+      'idObject': idObject,
       'name': name,
       'email': email,
       'password': password,

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+// import 'package:parcial_3/models/article.dart';
 import 'package:parcial_3/models/user.dart';
 import '../models/article_user.dart';
 import '../services/article.dart';
+import '../utils/format_text.dart';
 import '../utils/widget_articles_personal.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -34,71 +36,75 @@ class _ProfileScreen extends State<ProfileScreen> {
         ],
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                Expanded(
-                  flex: 3,
-                  child: Container(
-                    height: 100,
-                    width: 100,
-                    decoration: BoxDecoration(
-                      // image: DecorationImage(
-                      //   fit: BoxFit.cover,
-                      //   image: NetworkImage(widget.user.profileImageUrl ?? ''),
-                      // ),
-                      borderRadius: BorderRadius.all(Radius.circular(50.0)),
-                      border: Border.all(
-                        color: Colors.white,
-                        width: 4.0,
-                      ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 15.0),
+          child: Column(
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  Expanded(
+                    flex: 3,
+                    child: CircleAvatar(
+                      radius: 50,
+                      backgroundImage: (widget
+                                      .userInformation.profileImageUrl !=
+                                  null &&
+                              widget
+                                  .userInformation.profileImageUrl!.isNotEmpty)
+                          ? NetworkImage(
+                                  'https://www.altonivel.com.mx/wp-content/uploads/2020/08/warren-buffet.jpg')
+                              as ImageProvider<Object>?
+                          : AssetImage('assets/images/DEFAULT_IMAGES.png')
+                              as ImageProvider<Object>?,
+                      backgroundColor: Colors.transparent,
                     ),
                   ),
-                ),
-                Expanded(
-                  flex: 7,
-                  child: ListTile(
-                      // title: Text(
-                      //   widget.user.name,
-                      //   style: TextStyles.titleStyleCard,
-                      // ),
-                      // subtitle: Text(
-                      //     'Artículos publicados: ${widget.articles.length}',
-                      //     style: TextStyles.subtitleStyleCard),
+                  Expanded(
+                    flex: 7,
+                    child: ListTile(
+                      title: Text(
+                        "Autor: ${widget.userInformation.name}",
+                        style: TextStyles.titleStyleCard,
                       ),
-                ),
-              ],
-            ),
-            SizedBox(height: 20),
-            FutureBuilder<List<ArticleUser>>(
-              future: _articleService.fetchArticlesByOneUser(widget
-                  .userInformation
-                  .idObject), // asumir que userInformation tiene un campo id
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  // Muestra un indicador de carga mientras los datos se están cargando
-                  return Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  // Muestra un mensaje de error si algo sale mal
-                  return Text('Error: ${snapshot.error}');
-                } else {
-                  // Los datos están disponibles, muéstralos en los widgets CardArticlesPersonal
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: snapshot.data!.length,
-                    itemBuilder: (context, index) {
-                      return CardArticlesPersonal(
-                        article: snapshot.data![index].article,
-                        user: snapshot.data![index].user,
+                      // subtitle: Text(
+                      //     'Artículos publicados: ${snapshot.data!.length}',
+                      //     style: TextStyles.subtitleStyleCard),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 20),
+              FutureBuilder<List<ArticleUser>>(
+                future: _articleService
+                    .fetchArticlesByOneUser(widget.userInformation.idObject),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                  if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else {
+                    // Los datos están disponibles, muéstralos en los widgets CardArticlesPersonal
+                    if (snapshot.hasData && snapshot.data!.isEmpty) {
+                      return Text('Aún no has publicado artículos');
+                    } else {
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (context, index) {
+                          return CardArticlesPersonal(
+                            article: snapshot.data![index].article,
+                            user: snapshot.data![index].user,
+                          );
+                        },
                       );
-                    },
-                  );
-                }
-              },
-            )
-          ],
+                    }
+                  }
+                },
+              )
+            ],
+          ),
         ),
       ),
     );

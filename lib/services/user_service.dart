@@ -33,6 +33,7 @@ class UserService {
     if (response.statusCode == 200) {
       final json = jsonDecode(utf8.decode(response.bodyBytes));
       final user = User.fromJson(json);
+      print(user.idObject); // --> Ya lo revise
       return user;
     } else {
       Map<String, dynamic> errorDetails =

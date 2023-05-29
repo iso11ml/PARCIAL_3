@@ -100,6 +100,8 @@ class MyCustomDialogs {
                   try {
                     await Future.delayed(const Duration(seconds: 2));
                     User user = await userService.getUser(email, password);
+                    print("Hola");
+                    print(user.idObject);
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => MainScreen(userInformation: user),
@@ -233,6 +235,7 @@ class MyCustomDialogs {
                     await Future.delayed(const Duration(seconds: 2));
                     User user =
                         await userService.createUser(username, email, password);
+                    print(user);
                     // Navigator.of(context).push(
                     //   MaterialPageRoute(
                     //     builder: (context) => HomePage(user: user),
