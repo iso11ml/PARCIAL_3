@@ -19,7 +19,7 @@ class _MainScreenState extends State<MainScreen> {
   late HomeScreen _homeScreen;
   late NewArticleScreen _newArticleScreen;
   late ProfileScreen _profileScreen;
-  final ConfigurationScreen _configurationScreen = ConfigurationScreen();
+  late ConfigurationScreen _configurationScreen;
   @override
   void initState() {
     super.initState();
@@ -28,6 +28,8 @@ class _MainScreenState extends State<MainScreen> {
     _newArticleScreen =
         NewArticleScreen(userInformation: widget.userInformation);
     _profileScreen = ProfileScreen(userInformation: widget.userInformation);
+    _configurationScreen =
+        ConfigurationScreen(userInformation: widget.userInformation);
   }
 
   @override

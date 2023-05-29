@@ -1,6 +1,5 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
-import '../models/article.dart';
 import '../models/user.dart';
 import '../services/article.dart';
 import '../utils/format_text.dart';
