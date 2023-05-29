@@ -199,6 +199,10 @@ class _NewArticleScreenState extends State<NewArticleScreen> {
                             'Artículo creado y agregado a la categoría con éxito.'),
                       ),
                     );
+                    _titleController.clear();
+                    _contentController.clear();
+                    _tagsController.clear();
+                    _selectedCategory = null;
                   } catch (e) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
