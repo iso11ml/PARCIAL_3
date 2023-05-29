@@ -4,9 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../models/article.dart';
 import '../models/user.dart';
+import '../services/comment_service.dart';
 import '../utils/format_text.dart';
 import 'package:http/http.dart' as http;
-//
 
 class ArticleDetailScreen extends StatefulWidget {
   final Article article;
@@ -24,17 +24,39 @@ class ArticleDetailScreen extends StatefulWidget {
 }
 
 class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
+  final _commentController = TextEditingController();
+
   final ValueNotifier<bool> _isArticleLiked = ValueNotifier<bool>(false);
+  List<dynamic> _comments = [];
 
   @override
   void initState() {
     super.initState();
     _isArticleLiked.value =
         isArticleLikedByCurrentUser(widget.article, widget.user.idObject);
+    fetchComments(); // Cargar los comentarios al ingresar a la pantalla
   }
 
   bool isArticleLikedByCurrentUser(Article article, String currentUserId) {
     return article.likesUserId.contains(currentUserId);
+  }
+
+  Future<void> fetchComments() async {
+    try {
+      final response = await http.get(
+        Uri.parse('http://localhost:8000/comments/${widget.article.idObject}'),
+      );
+      if (response.statusCode == 200) {
+        final List<dynamic> comments = jsonDecode(response.body);
+        setState(() {
+          _comments = comments;
+        });
+      } else {
+        print('Error al obtener los comentarios: ${response.statusCode}');
+      }
+    } catch (error) {
+      print('Error al obtener los comentarios: $error');
+    }
   }
 
   Future<bool> likeArticle(String articleId, String userId) async {
@@ -113,10 +135,19 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
               child: SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    widget.article.description,
-                    style: TextStyle(fontSize: 14),
-                  ),
+                  child: _comments.isEmpty
+                      ? Text(
+                          'Aún no hay comentarios',
+                          style: TextStyles.textStyleWarning,
+                        )
+                      : Column(
+                          children: _comments
+                              .map((comment) => Text(
+                                    comment['description'],
+                                    style: TextStyle(fontSize: 14),
+                                  ))
+                              .toList(),
+                        ),
                 ),
               ),
             ),
@@ -143,10 +174,48 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
                   },
                 ),
                 IconButton(
-                  onPressed: () {
-                    // TODO: implement comment functionality
+                  icon: Icon(Icons.add_comment),
+                  onPressed: () async {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Text('New Comment'),
+                          content: TextField(
+                            controller: _commentController,
+                            decoration: InputDecoration(
+                              hintText: 'Ingrese su comentario',
+                            ),
+                          ),
+                          actions: [
+                            TextButton(
+                              child: Text('Publicar'),
+                              onPressed: () async {
+                                String commentText = _commentController.text;
+
+                                if (commentText.isEmpty) {
+                                  print("El comentario no puede estar vacío.");
+                                  return;
+                                }
+
+                                CommentService commentService =
+                                    CommentService();
+                                await commentService.addComment(
+                                  widget.article.idObject,
+                                  widget.user.email,
+                                  commentText,
+                                );
+
+                                _commentController.clear();
+                                Navigator.of(context).pop();
+                                await fetchComments();
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
                   },
-                  icon: Icon(Icons.comment),
                 ),
               ],
             ),

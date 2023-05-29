@@ -57,4 +57,11 @@ abstract class TextStyles {
     fontFamily: 'Poiret_One',
     color: Colors.black,
   );
+
+  static const TextStyle textStyleWarning = TextStyle(
+    fontSize: 15,
+    fontWeight: FontWeight.bold,
+    fontFamily: 'Urbanist',
+    color: Colors.black,
+  );
 }

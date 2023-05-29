@@ -98,7 +98,10 @@ class _ProfileScreen extends State<ProfileScreen> {
                   } else {
                     // Los datos están disponibles, muéstralos en los widgets CardArticlesPersonal
                     if (snapshot.hasData && snapshot.data!.isEmpty) {
-                      return Text('Aún no has publicado artículos');
+                      return Text(
+                        'Aún no has publicado artículos',
+                        style: TextStyles.textStyleWarning,
+                      );
                     } else {
                       return ListView.builder(
                         shrinkWrap: true,
