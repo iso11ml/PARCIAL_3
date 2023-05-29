@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 // import 'package:parcial_3/models/article.dart';
 import 'package:parcial_3/models/user.dart';
@@ -43,7 +44,7 @@ class _ProfileScreen extends State<ProfileScreen> {
               Row(
                 children: <Widget>[
                   Expanded(
-                    flex: 3,
+                    flex: 2,
                     child: CircleAvatar(
                       radius: 50,
                       backgroundImage: (widget
@@ -73,7 +74,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                   ),
                 ],
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 30),
               FutureBuilder<List<ArticleUser>>(
                 future: _articleService
                     .fetchArticlesByOneUser(widget.userInformation.idObject),
@@ -96,6 +97,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                           return CardArticlesPersonal(
                             article: snapshot.data![index].article,
                             user: snapshot.data![index].user,
+                            category: snapshot.data![index].category,
                           );
                         },
                       );

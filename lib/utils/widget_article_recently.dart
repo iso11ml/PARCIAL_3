@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../models/article.dart';
 import '../models/user.dart';
@@ -7,10 +8,12 @@ import 'format_text.dart';
 class CardArticlesShort extends StatelessWidget {
   final Article article;
   final User user;
+  final String category;
 
   const CardArticlesShort({
     required this.article,
     required this.user,
+    required this.category,
   });
 
   @override

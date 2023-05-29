@@ -43,4 +43,47 @@ class ArticleService {
       throw Exception('Failed to load data');
     }
   }
+
+  Future<String> createArticle(
+      String title, String description, String userId, String tags) async {
+    final response = await http.post(
+      Uri.parse('$_baseUrl/newArticle'),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({
+        'title': title,
+        'description': description,
+        'user_id': userId,
+        'tags': tags
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception('Failed to create article');
+    }
+  }
+
+  Future<String> addArticleToCategory(
+      String articleId, String categoryName) async {
+    final response = await http.post(
+      Uri.parse('$_baseUrl/addArticleToCategory'),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({
+        'article_id': articleId,
+        'category_name': categoryName,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> responseBody = jsonDecode(response.body);
+      return responseBody['message'] as String;
+    } else {
+      throw Exception(': No se pudo realizar la operación');
+    }
+  }
 }

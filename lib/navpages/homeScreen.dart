@@ -80,6 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               return CardArticlesShort(
                                 article: articleUser.article,
                                 user: articleUser.user,
+                                category: articleUser.category,
                               );
                             },
                           );
@@ -126,7 +127,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             width: 16,
                           ),
                           FilterButton(
-                            label: "Fecha Publición",
+                            label: "Categoría",
                             onPressed: () {
                               // Acción cuando se presiona el botón "Todos"
                             },
@@ -166,6 +167,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               return CardArticlesLarge(
                                 article: articleUser.article,
                                 user: articleUser.user,
+                                category: articleUser.category,
                               );
                             },
                           );

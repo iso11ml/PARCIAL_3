@@ -7,10 +7,12 @@ import 'format_text.dart';
 class CardArticlesLarge extends StatelessWidget {
   final Article article;
   final User user;
+  final String category;
 
   const CardArticlesLarge({
     required this.article,
     required this.user,
+    required this.category,
   });
 
   @override
@@ -54,7 +56,7 @@ class CardArticlesLarge extends StatelessWidget {
                     ],
                   ),
                   Text(
-                    article.idObject,
+                    category,
                     style: TextStyles.titleStyleCard,
                   ),
                 ],

@@ -102,6 +102,7 @@ class MyCustomDialogs {
                     User user = await userService.getUser(email, password);
                     print("Hola");
                     print(user.idObject);
+                    Navigator.of(context).pop();
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => MainScreen(userInformation: user),
@@ -200,22 +201,6 @@ class MyCustomDialogs {
           ),
           actions: [
             ElevatedButton(
-              child: Text("Back"),
-              onPressed: () {
-                _closeDialog(context);
-              },
-              style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.all(20.0),
-                fixedSize: Size(120, 40),
-                textStyle: TextStyles.buttonStyle,
-                primary: Colors.yellow,
-                onPrimary: Colors.black87,
-                elevation: 15,
-                shadowColor: Colors.yellow,
-                // side: BorderSide(color: Colors.black87, width: 2)
-              ),
-            ),
-            ElevatedButton(
               child: Text("Continue"),
               onPressed: () async {
                 String username = _nameController.text;
@@ -236,14 +221,23 @@ class MyCustomDialogs {
                     User user =
                         await userService.createUser(username, email, password);
                     print(user);
-                    // Navigator.of(context).push(
-                    //   MaterialPageRoute(
-                    //     builder: (context) => HomePage(user: user),
-                    //   ),
-                    // );
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content:
+                            Text('Cuenta creada. Por favor, inicie sesión.'),
+                        backgroundColor: Colors
+                            .green, // color opcional para la barra de éxito
+                      ),
+                    );
+
+                    // Cierra el diálogo después de que el usuario se ha creado con éxito
+                    Navigator.of(context).pop();
                   } catch (e) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(e.toString())),
+                      SnackBar(
+                          content: Text(e.toString()),
+                          backgroundColor: Colors.red),
                     );
                   } finally {
                     _isLoading.value = false;

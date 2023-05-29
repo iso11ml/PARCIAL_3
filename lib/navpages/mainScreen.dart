@@ -23,7 +23,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     super.initState();
-    print('User Information: ${widget.userInformation.idObject}');
+
     _homeScreen = HomeScreen(userInformation: widget.userInformation);
     _newArticleScreen =
         NewArticleScreen(userInformation: widget.userInformation);

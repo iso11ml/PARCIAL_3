@@ -7,10 +7,12 @@ import 'format_text.dart';
 class CardArticlesPersonal extends StatelessWidget {
   final Article article;
   final User user;
+  final String category;
 
   const CardArticlesPersonal({
     required this.article,
     required this.user,
+    required this.category,
   });
 
   @override
@@ -33,7 +35,7 @@ class CardArticlesPersonal extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(article.idObject, style: TextStyles.titleStyleCard),
+                  Text(category, style: TextStyles.titleStyleCard),
                   IconButton(
                     icon: Icon(Icons.delete),
                     onPressed: () {

@@ -6,6 +6,7 @@ class Article {
   final String description;
   final String date;
   final String userId;
+  final String tags;
   final List<String> likesUserId;
   final List<Comment> comments;
 
@@ -14,6 +15,7 @@ class Article {
     required this.title,
     required this.description,
     required this.date,
+    required this.tags,
     required this.userId,
     required this.likesUserId,
     required this.comments,
@@ -25,6 +27,7 @@ class Article {
       title: json['title'],
       description: json['description'],
       date: json['date'],
+      tags: json['tags'],
       userId: json['user_id'],
       likesUserId: List<String>.from(json['likesUserID']),
       comments: List<Comment>.from(

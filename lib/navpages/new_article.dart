@@ -1,6 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
+import '../models/article.dart';
 import '../models/user.dart';
+import '../services/article.dart';
 import '../utils/format_text.dart';
 
 class NewArticleScreen extends StatefulWidget {
@@ -16,7 +18,7 @@ class _NewArticleScreenState extends State<NewArticleScreen> {
   final _titleController = TextEditingController();
   final _contentController = TextEditingController();
   final _tagsController = TextEditingController();
-  // final _categoriesController = TextEditingController();
+  final _articleService = ArticleService();
 
   List<String> _categories = [
     'Ciencia',
@@ -170,15 +172,47 @@ class _NewArticleScreenState extends State<NewArticleScreen> {
               child: Text("Publish"),
               onPressed: () async {
                 String title = _titleController.text;
-                String contenido = _contentController.text;
+                String content = _contentController.text;
+                String tags = _tagsController.text;
+                String userId = widget.userInformation.idObject;
+                String? category = _selectedCategory;
 
-                if (title.isEmpty || contenido.isEmpty) {
+                if (title.isEmpty ||
+                    content.isEmpty ||
+                    tags.isEmpty ||
+                    category == null) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text(
-                          'Exception: No se puede registrar al usuario, campos vacíos.'),
+                          'Exception: No se pudo publicar el artículo, campos vacíos.'),
                     ),
                   );
+                } else {
+                  try {
+                    String articleId = await _articleService.createArticle(
+                        title, content, userId, tags);
+                    String response =
+                        await _articleService.addArticleToCategory(
+                            articleId.toString(), category.toString());
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                            'Artículo creado y agregado a la categoría con éxito.'),
+                      ),
+                    );
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(e.toString()),
+                      ),
+                    );
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(" " + e.toString()),
+                      ),
+                    );
+                  }
                 }
               },
               style: ElevatedButton.styleFrom(
@@ -189,7 +223,6 @@ class _NewArticleScreenState extends State<NewArticleScreen> {
                 onPrimary: Colors.black87,
                 elevation: 15,
                 shadowColor: Colors.yellow,
-                // side: BorderSide(color: Colors.black87, width: 2)
               ),
             )
           ],
