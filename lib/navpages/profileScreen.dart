@@ -53,7 +53,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                               widget
                                   .userInformation.profileImageUrl!.isNotEmpty)
                           ? NetworkImage(
-                                  'https://www.altonivel.com.mx/wp-content/uploads/2020/08/warren-buffet.jpg')
+                                  'https://a.espncdn.com/combiner/i?img=/i/headshots/nba/players/full/1966.png&w=350&h=254')
                               as ImageProvider<Object>?
                           : AssetImage('assets/images/DEFAULT_IMAGES.png')
                               as ImageProvider<Object>?,
