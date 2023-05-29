@@ -133,22 +133,22 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
                 borderRadius: BorderRadius.circular(5),
               ),
               child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: _comments.isEmpty
-                      ? Text(
+                child: _comments.isEmpty
+                    ? Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text(
                           'Aún no hay comentarios',
                           style: TextStyles.textStyleWarning,
-                        )
-                      : Column(
-                          children: _comments
-                              .map((comment) => Text(
-                                    comment['description'],
-                                    style: TextStyle(fontSize: 14),
-                                  ))
-                              .toList(),
                         ),
-                ),
+                      )
+                    : Column(
+                        children: _comments
+                            .map((comment) => Text(
+                                  comment['description'],
+                                  style: TextStyle(fontSize: 14),
+                                ))
+                            .toList(),
+                      ),
               ),
             ),
             SizedBox(height: 30),
