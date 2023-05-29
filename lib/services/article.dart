@@ -3,7 +3,7 @@ import 'dart:convert';
 import '../models/article_user.dart';
 
 class ArticleService {
-  final String _baseUrl = 'http://localhost:8000';
+  final String _baseUrl = 'http://34.168.92.0:8000';
 
   Future<List<ArticleUser>> fetchArticleUsers() async {
     final response = await http.get(Uri.parse('$_baseUrl/getAllArticles'));

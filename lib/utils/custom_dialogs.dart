@@ -282,7 +282,7 @@ class MyCustomDialogs {
         // ignore: sized_box_for_whitespace
         child: Container(
           height: 60,
-          width: 180,
+          width: 160,
           child: Padding(
             padding: const EdgeInsets.all(15.0),
             child: Row(

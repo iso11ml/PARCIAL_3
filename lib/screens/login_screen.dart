@@ -48,8 +48,8 @@ class _LoginState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   MyCustomDialogs.generalButton(
-                      context, Icons.person, 'Create Account', '1'),
-                  const SizedBox(width: 20),
+                      context, Icons.person, 'New Account', '1'),
+                  const SizedBox(width: 10),
                   MyCustomDialogs.generalButton(
                       context, Icons.person, 'Sign In', '2')
                 ],

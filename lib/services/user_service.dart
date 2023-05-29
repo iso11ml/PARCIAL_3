@@ -3,7 +3,7 @@ import 'dart:convert';
 import '../models/user.dart';
 
 class UserService {
-  final String _baseUrl = 'http://localhost:8000';
+  final String _baseUrl = 'http://34.168.92.0:8000';
 
   Future<User> createUser(
       String username, String email, String password) async {
