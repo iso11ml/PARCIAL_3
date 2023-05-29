@@ -96,9 +96,6 @@ class _ConfigurationScreen extends State<ConfigurationScreen> {
                 String newName = _nameController.text;
                 String newPassword = _passwordController.text;
 
-                // Perform the necessary actions to save the changes
-                // such as updating the user's name and password.
-
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text('Changes saved successfully.'),

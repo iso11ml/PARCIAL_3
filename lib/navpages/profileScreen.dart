@@ -47,16 +47,14 @@ class _ProfileScreen extends State<ProfileScreen> {
                     flex: 2,
                     child: CircleAvatar(
                       radius: 50,
-                      backgroundImage: (widget
-                                      .userInformation.profileImageUrl !=
-                                  null &&
-                              widget
-                                  .userInformation.profileImageUrl!.isNotEmpty)
-                          ? NetworkImage(
-                                  'https://a.espncdn.com/combiner/i?img=/i/headshots/nba/players/full/1966.png&w=350&h=254')
-                              as ImageProvider<Object>?
-                          : AssetImage('assets/images/DEFAULT_IMAGES.png')
-                              as ImageProvider<Object>?,
+                      backgroundImage:
+                          (widget.userInformation.profileImageUrl != null &&
+                                  widget.userInformation.profileImageUrl!
+                                      .isNotEmpty)
+                              ? NetworkImage(
+                                      widget.userInformation.profileImageUrl!)
+                                  as ImageProvider<Object>?
+                              : AssetImage('assets/images/DEFAULT_IMAGES.png'),
                       backgroundColor: Colors.transparent,
                     ),
                   ),
@@ -67,14 +65,27 @@ class _ProfileScreen extends State<ProfileScreen> {
                         "Autor: ${widget.userInformation.name}",
                         style: TextStyles.titleStyleCard,
                       ),
-                      // subtitle: Text(
-                      //     'Artículos publicados: ${snapshot.data!.length}',
-                      //     style: TextStyles.subtitleStyleCard),
+                      subtitle: Text(
+                          'Tu correo: ${widget.userInformation.email}',
+                          style: TextStyles.subtitleStyleCard),
                     ),
                   ),
                 ],
               ),
-              SizedBox(height: 30),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 20, horizontal: 10),
+                    child: Text(
+                      "Tus artículos",
+                      style: TextStyles.buttonStyle,
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 10),
               FutureBuilder<List<ArticleUser>>(
                 future: _articleService
                     .fetchArticlesByOneUser(widget.userInformation.idObject),

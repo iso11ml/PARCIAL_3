@@ -31,6 +31,13 @@ class _HomeScreenState extends State<HomeScreen> {
     _articleUsersFutureByWeek = _articleService.fetchArticleUsersByWeek();
   }
 
+  Future<void> _reloadArticles() async {
+    setState(() {
+      _articleUsersFuture = _articleService.fetchArticleUsers();
+      _articleUsersFutureByWeek = _articleService.fetchArticleUsersByWeek();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,142 +54,146 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              height: 200,
-              child: Stack(
-                children: [
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: Padding(
-                      padding: EdgeInsets.all(16),
-                      child: Text("New Articles This Week",
-                          style: TextStyles.titleStyleText),
-                    ),
-                  ),
-                  Positioned(
-                    top: 40,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    child: FutureBuilder<List<ArticleUser>>(
-                      future: _articleUsersFutureByWeek,
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          final articleUsers = snapshot.data!;
-                          return ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: articleUsers.length,
-                            itemBuilder: (context, index) {
-                              final articleUser = articleUsers[index];
-                              return CardArticlesShort(
-                                article: articleUser.article,
-                                user: articleUser.user,
-                                category: articleUser.category,
-                              );
-                            },
-                          );
-                        } else if (snapshot.hasError) {
-                          return Text('Error: ${snapshot.error}');
-                        }
-                        return Lottie.network(
-                            'https://assets5.lottiefiles.com/private_files/lf30_fup2uejx.json');
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              height: 85,
-              child: Stack(
-                children: [
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: Padding(
-                      padding: EdgeInsets.all(16),
-                      child:
-                          Text("Filter By", style: TextStyles.titleStyleText),
-                    ),
-                  ),
-                  Positioned(
-                    top: 40,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        children: [
-                          FilterButton(
-                            label: "Autor",
-                            onPressed: () {
-                              // Acción cuando se presiona el botón "Todos"
-                            },
-                          ),
-                          SizedBox(
-                            width: 16,
-                          ),
-                          FilterButton(
-                            label: "Categoría",
-                            onPressed: () {
-                              // Acción cuando se presiona el botón "Todos"
-                            },
-                          )
-                        ],
+      body: RefreshIndicator(
+        onRefresh: _reloadArticles,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                height: 200,
+                child: Stack(
+                  children: [
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Padding(
+                        padding: EdgeInsets.all(16),
+                        child: Text("New Articles This Week",
+                            style: TextStyles.titleStyleText),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              height: 500,
-              child: Stack(
-                children: [
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: Padding(
-                      padding: EdgeInsets.all(16),
-                      child: Text("Articles", style: TextStyles.titleStyleText),
+                    Positioned(
+                      top: 40,
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      child: FutureBuilder<List<ArticleUser>>(
+                        future: _articleUsersFutureByWeek,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            final articleUsers = snapshot.data!;
+                            return ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: articleUsers.length,
+                              itemBuilder: (context, index) {
+                                final articleUser = articleUsers[index];
+                                return CardArticlesShort(
+                                  article: articleUser.article,
+                                  user: articleUser.user,
+                                  category: articleUser.category,
+                                );
+                              },
+                            );
+                          } else if (snapshot.hasError) {
+                            return Text('Error: ${snapshot.error}');
+                          }
+                          return Lottie.network(
+                              'https://assets5.lottiefiles.com/private_files/lf30_fup2uejx.json');
+                        },
+                      ),
                     ),
-                  ),
-                  Positioned(
-                    top: 40,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    child: FutureBuilder<List<ArticleUser>>(
-                      future: _articleUsersFuture,
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          final articleUsers = snapshot.data!;
-                          return ListView.builder(
-                            itemCount: articleUsers.length,
-                            itemBuilder: (context, index) {
-                              final articleUser = articleUsers[index];
-                              return CardArticlesLarge(
-                                article: articleUser.article,
-                                user: articleUser.user,
-                                category: articleUser.category,
-                              );
-                            },
-                          );
-                        } else if (snapshot.hasError) {
-                          return Text('Error: ${snapshot.error}');
-                        }
-                        return Lottie.network(
-                            'https://assets5.lottiefiles.com/private_files/lf30_fup2uejx.json');
-                      },
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-          ],
+              Container(
+                height: 85,
+                child: Stack(
+                  children: [
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Padding(
+                        padding: EdgeInsets.all(16),
+                        child:
+                            Text("Filter By", style: TextStyles.titleStyleText),
+                      ),
+                    ),
+                    Positioned(
+                      top: 40,
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ListView(
+                          scrollDirection: Axis.horizontal,
+                          children: [
+                            FilterButton(
+                              label: "Autor",
+                              onPressed: () {
+                                // Acción cuando se presiona el botón "Todos"
+                              },
+                            ),
+                            SizedBox(
+                              width: 16,
+                            ),
+                            FilterButton(
+                              label: "Categoría",
+                              onPressed: () {
+                                // Acción cuando se presiona el botón "Todos"
+                              },
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                height: 500,
+                child: Stack(
+                  children: [
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Padding(
+                        padding: EdgeInsets.all(16),
+                        child:
+                            Text("Articles", style: TextStyles.titleStyleText),
+                      ),
+                    ),
+                    Positioned(
+                      top: 40,
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      child: FutureBuilder<List<ArticleUser>>(
+                        future: _articleUsersFuture,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            final articleUsers = snapshot.data!;
+                            return ListView.builder(
+                              itemCount: articleUsers.length,
+                              itemBuilder: (context, index) {
+                                final articleUser = articleUsers[index];
+                                return CardArticlesLarge(
+                                  article: articleUser.article,
+                                  user: articleUser.user,
+                                  category: articleUser.category,
+                                );
+                              },
+                            );
+                          } else if (snapshot.hasError) {
+                            return Text('Error: ${snapshot.error}');
+                          }
+                          return Lottie.network(
+                              'https://assets5.lottiefiles.com/private_files/lf30_fup2uejx.json');
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

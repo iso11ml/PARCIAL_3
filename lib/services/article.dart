@@ -1,5 +1,6 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import '../models/article.dart';
 import '../models/article_user.dart';
 
 class ArticleService {

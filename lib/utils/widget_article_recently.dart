@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../models/article.dart';
 import '../models/user.dart';
+import '../screens/article_expanded.dart';
 import 'format_text.dart';
 
 class CardArticlesShort extends StatelessWidget {
@@ -20,8 +21,16 @@ class CardArticlesShort extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        // Aquí colocas lo que quieres que haga al ser presionado.
-        print('Card pressed');
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ArticleDetailScreen(
+              article: article,
+              user: user,
+              category: category,
+            ),
+          ),
+        );
       },
       child: Card(
         elevation: 5,
@@ -37,6 +46,9 @@ class CardArticlesShort extends StatelessWidget {
               Text(
                 article.title,
                 style: TextStyles.titleStyleCard,
+                softWrap: true,
+                maxLines: 1, // ajusta este número según tus necesidades
+                overflow: TextOverflow.ellipsis,
               ),
               SizedBox(height: 8),
               Text(
